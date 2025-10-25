@@ -1,0 +1,4021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="dynamic-title">Aliver Biopharm - A-Level Biology & Pharmacy Education Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --primary: #007bff;
+            --secondary: #28a745;
+            --accent: #fd7e14;
+            --light: #f8f9fa;
+            --dark: #1a1a1a;
+            --text: #333333;
+            --text-light: #6c757d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --error: #dc3545;
+            --info: #17a2b8;
+           --section-divider: #c19a6b; /* nice light brown */
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.12);
+            --shadow-strong: rgba(0, 0, 0, 0.15);
+            --pale-blue: #e3f2fd;
+            --pale-green: #e8f5e9;
+            --nav-blue-green: #20b2aa;
+            --nav-blue-green-dark: #1a9c95;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: var(--text);
+            line-height: 1.7;
+            background-color: #fff;
+            font-weight: 400;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 15px var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .top-bar {
+            background-color: #666666;
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .top-bar .logo-text {
+            color: white;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .top-bar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-section {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+ .logo img {
+  width: 25vw;       /* very large and responsive */
+  max-width: 400px;  /* optional max size */
+  height: auto;      /* maintain aspect ratio */
+  display: block;    /* removes inline spacing */
+  object-fit: contain;
+}
+
+/* Optional: smaller screens */
+@media (max-width: 600px) {
+  .logo img {
+    width: 40vw;     /* scales down on small screens */
+  }
+}
+
+        .logo-text {
+            font-size: 12vw;
+            font-weight: 900;
+            margin-left: 10px;
+            font-family: 'Playfair Display', 'Georgia', serif;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            padding-right: 45px;
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-button {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .testimonial-section {
+            flex: 0 0 auto;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+            text-align: right;
+            max-width: 250px;
+        }
+
+        .nav-bar {
+            background-color: white;
+            padding: 0;
+        }
+
+        .nav-bar-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .nav-links li {
+            flex: 1;
+            text-align: center;
+            margin: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #222222;
+            font-weight: 600;
+            transition: all 0.4s ease;
+            position: relative;
+            padding: 20px 15px;
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            background-color: transparent;
+            overflow: hidden;
+            border-radius: 0;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--nav-blue-green), #2ecc71);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links a:hover::before {
+            left: 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease;
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            background: white;      
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+            width: 30px;
+            height: 30px;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .mobile-menu-btn span:nth-child(1) {
+            top: 0px;
+        }
+
+        .mobile-menu-btn span:nth-child(2) {
+            top: 10px;
+        }
+
+        .mobile-menu-btn span:nth-child(3) {
+            top: 20px;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            top: 10px;
+            transform: rotate(135deg);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+            left: -30px;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            top: 10px;
+            transform: rotate(-135deg);
+        }
+
+        /* Main Content Sections */
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--section-divider);
+            display: flex;
+            flex-direction: column;
+        }
+
+        section:nth-child(even) {
+            background-color: var(--light);
+        }
+
+        section:nth-child(odd):not(.hero) {
+            background-color: var(--pale-blue);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-content {
+            width: 100%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--dark);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+            font-family: 'Georgia', serif;
+            color: #2c3e50;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 0;
+            object-fit: cover;
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-family: 'Georgia', serif;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #f0f0f0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 10px var(--shadow-light);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px var(--shadow-medium);
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+        }
+
+        .btn-primary:hover {
+            background-color: #34ce57;
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--primary);
+            margin-left: 15px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #3399ff;
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--primary);
+            box-shadow: 0 6px 15px var(--shadow-medium);
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 35px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-premium:hover::before {
+            left: 100%;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            color: white;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-5px) translateX(-50%);
+            }
+        }
+
+        /* Preview Hub */
+        .preview-hub {
+            padding: 60px 0;
+            background-color: var(--pale-green);
+        }
+
+        .preview-section {
+            margin-bottom: 60px;
+        }
+
+        .preview-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .preview-section-title {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+            font-weight: 700;
+            font-family: 'Georgia', serif;
+            color: #2c3e50;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-shadow: 0 4px 12px var(--shadow-light);
+        }
+
+        .resource-item:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 8px 25px var(--shadow-medium);
+            transform: translateY(-5px);
+        }
+
+        .resource-icon {
+            font-size: 24px;
+            color: var(--primary);
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .resource-info {
+            flex: 1;
+        }
+
+        .resource-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+            font-size: 18px;
+            font-family: 'Georgia', serif;
+            color: #2c3e50;
+        }
+
+        .resource-description {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .resource-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .resource-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .note-item {
+            padding: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            background-color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--secondary), var(--primary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .note-item:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 8px 25px var(--shadow-medium);
+            transform: translateY(-5px);
+        }
+
+        .note-item:hover::before {
+            opacity: 1;
+        }
+
+        .note-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 18px;
+            font-family: 'Georgia', serif;
+            color: #2c3e50;
+        }
+
+        .note-description {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .note-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .note-link:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Videos */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .video-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-medium);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+                   object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .video-item:hover .video-thumbnail img {
+            transform: scale(1.05);
+        }
+
+        .video-play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .video-item:hover .video-play-button {
+            background: var(--primary);
+            color: white;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 18px;
+            font-family: 'Georgia', serif;
+            color: #2c3e50;
+        }
+
+        .video-description {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .video-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .video-link:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Team Section */
+        .team-section {
+            background-color: var(--pale-green);
+        }
+
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .team-member-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 25px;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px var(--shadow-medium);
+        }
+
+        .team-member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .team-member-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            border: 4px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .team-member-card:hover .team-member-image {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .team-member-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-family: 'Georgia', serif;
+            color: #2c3e50;
+        }
+
+        .team-member-role {
+            font-size: 16px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #e74c3c;
+        }
+
+        .team-member-department {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-weight: 500;
+            color: #7f8c8d;
+        }
+
+        .team-member-bio {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            display: block;
+            overflow: visible;
+        }
+
+        .team-member-expertise {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .expertise-tag {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .team-member-social {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        .team-member-experience {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        .team-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            background-color: var(--pale-brown);
+        }
+
+        .testimonials-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px var(--shadow-medium);
+        }
+
+        .testimonial-content {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 20px;
+            font-style: italic;
+            position: relative;
+        }
+
+        .testimonial-content::before {
+            content: '"';
+            font-size: 60px;
+            color: var(--primary);
+            opacity: 0.2;
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .testimonial-author-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .testimonial-author-info {
+            flex: 1;
+        }
+
+        .testimonial-author-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 4px;
+            font-family: 'Georgia', serif;
+            color: #2c3e50;
+        }
+
+        .testimonial-author-meta {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .testimonial-rating {
+            margin-bottom: 15px;
+        }
+
+        .star {
+            color: #ffc107;
+            margin-right: 2px;
+        }
+
+        .star.empty {
+            color: #e0e0e0;
+        }
+
+        .testimonials-actions {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* Message Section */
+        .message-section {
+            background-color: var(--pale-blue);
+            padding: 60px 0;
+        }
+
+        .message-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 25px var(--shadow-light);
+            max-width: 600px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .message-card.hidden {
+            display: none;
+        }
+
+        .message-card h3 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+            font-family: 'Georgia', serif;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-response {
+                   margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .form-response.success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .form-response.error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        .floating-message-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-message-btn:hover {
+            background-color: #3399ff;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .floating-message-btn.active {
+            background-color: var(--error);
+        }
+
+        .floating-message-btn.active:hover {
+            background-color: #c82333;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            background-color:#666666;
+            color:white 
+            padding: 70px 0 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-about h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+            font-weight: 700;
+            font-family: 'Georgia', serif;
+        }
+
+        .footer-about p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .footer-links h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+            font-weight: 600;
+            font-family: 'Georgia', serif;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+        }
+
+        .footer-links ul {
+            list-style: none;
+        } 
+
+        .footer-links li {
+            margin: 10px 0;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .social-links {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .modal.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--section-divider);
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--error);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .rating-stars {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 5px;
+        }
+
+        .rating-stars input {
+            display: none;
+        }
+
+        .rating-stars label {
+            cursor: pointer;
+            font-size: 24px;
+            color: #e0e0e0;
+            transition: color 0.3s ease;
+        }
+
+        .rating-stars input:checked ~ label,
+        .rating-stars label:hover,
+        .rating-stars label:hover ~ label {
+            color: #ffc107;
+        }
+
+        .rating-stars input:checked + label {
+            color: #ffc107;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .form-actions .btn {
+            flex: 1;
+        }
+
+        .video-modal-content {
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 450px;
+            border-radius: 8px;
+        }
+
+        /* Notifications */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .notification {
+                    padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: white;
+            box-shadow: 0 6px 15px var(--shadow-medium);
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.3s ease-out;
+            transition: transform 0.3s, opacity 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .notification.hiding {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .notification.success {
+            background-color: var(--success);
+            border-left-color: #1e7e34;
+        }
+
+        .notification.error {
+            background-color: var(--error);
+            border-left-color: #bd2130;
+        }
+
+        .notification.warning {
+            background-color: var(--warning);
+            color: var(--dark);
+            border-left-color: #e0a800;
+        }
+
+        .notification.info {
+            background-color: var(--info);
+            border-left-color: #138496;
+        }
+
+        .notification-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .notification-message {
+            font-size: 14px;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .notification-close:hover {
+            opacity: 1;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .rainbow-spinner {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #ff0000,
+                #ff8000,
+                #ffff00,
+                #80ff00,
+                #00ff00,
+                #00ff80,
+                #00ffff,
+                #0080ff,
+                #0000ff,
+                #8000ff,
+                #ff00ff,
+                #ff0080,
+                #ff0000
+            );
+            mask: radial-gradient(circle, transparent 60%, black 61%);
+            -webkit-mask: radial-gradient(circle, transparent 60%, black 61%);
+            animation: spin 3s linear infinite;
+            margin-bottom: 20px;
+            transition: all 2s ease;
+        }
+
+        .rainbow-spinner.final-state {
+            background: #f8d7da;
+            mask: none;
+            -webkit-mask: none;
+            animation: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d63384;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+            content: "Aliver Biopharm";
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: var(--text-light);
+            font-weight: 500;
+            text-align: center;
+            max-width: 400px;
+            margin-bottom: 30px;
+        }
+
+        .loading-queue {
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 15px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 6px 15px var(--shadow-light);
+        }
+
+        .loading-queue-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-family: 'Georgia', serif;
+        }
+
+        .loading-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .loading-item:last-child {
+            border-bottom: none;
+        }
+
+        .loading-item-icon {
+            margin-right: 10px;
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .loading-item-icon.loading {
+            color: var(--info);
+        }
+
+        .loading-item-icon.success {
+            color: var(--success);
+        }
+
+        .loading-item-icon.error {
+            color: var(--error);
+        }
+
+        .loading-item-text {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .loading-item.loaded .loading-item-text {
+            color: var(--text-light);
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Search Highlight */
+        .search-highlight {
+            background-color: #fff3cd !important;
+            border: 2px solid #ffc107 !important;
+            box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.3) !important;
+            transition: all 0.3s ease;
+        }
+
+        /* Search results modal */
+        .search-results-summary {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: var(--light);
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .search-results-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-result-item {
+            padding: 15px;
+            border: 1px solid var(--section-divider);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-result-item:hover {
+            background-color: var(--light);
+            border-color: var(--primary);
+        }
+
+        .result-type {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .result-type.resource { background-color: var(--success); }
+        .result-type.note { background-color: var(--info); }
+        .result-type.video { background-color: var(--warning); color: var(--dark); }
+        .result-type.team { background-color: var(--primary); }
+        .result-type.testimonial { background-color: #6f42c1; }
+
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .result-description {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .result-section {
+            font-size: 12px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .slideInUp {
+            animation: slideInUp 1s ease-out;
+        }
+
+        .fadeIn {
+            animation: fadeIn 1s ease-out;
+        }
+
+        .zoomIn {
+            animation: zoomIn 1s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .logo-text {
+                font-size: 32px;
+            }
+            
+            .nav-links a {
+                font-size: 16px;
+                padding: 18px 10px;
+            }
+            
+            .team-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .top-bar-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .logo-section, .search-section, .testimonial-section {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .search-bar {
+                width: 100%;
+                max-width: 500px;
+            }
+            
+            .testimonial-section {
+                text-align: center;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 20px var(--shadow-medium);
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 10px 0;
+                text-align: left;
+            }
+            
+            .nav-links a {
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 5px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 15px;
+            }
+            
+            .team-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo-text {
+                font-size: 28px;
+            }
+            
+            .testimonial-section {
+                font-size: 13px;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-stats {
+                gap: 1.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+            
+            .team-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+            
+            .team-member-card {
+                padding: 25px 20px;
+            }
+            
+            .team-filters {
+                gap: 10px;
+            }
+            
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .testimonials-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .testimonial-card {
+                padding: 20px;
+            }
+            
+            .modal-content {
+                margin: 10px;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .video-player {
+                height: 300px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .resources-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .notes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo-text {
+                font-size: 24px;
+            }
+            
+            .logo-image {
+                max-height: 50px;
+                max-width: 180px;
+            }
+            
+            .testimonial-section {
+                font-size: 12px;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .team-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-member-image {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .testimonials-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonial-author {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .testimonial-author-img {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .notification-container {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+            
+            .floating-message-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .loading-queue {
+                margin: 0 20px;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero {
+                padding: 70px 0;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay">
+        <div class="rainbow-spinner" id="loadingSpinner"></div>
+        <p class="loading-text">Please wait while we load all educational resources. This may take a moment...</p>
+        <div class="loading-queue">
+            <div class="loading-queue-title">Loading Progress:</div>
+            <div id="loadingQueueItems"></div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Floating Message Button -->
+    <div class="floating-message-btn" id="floatingMessageBtn">
+        <i class="fas fa-comment"></i>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="modal hidden">
+        <div class="modal-content video-modal-content">
+            <div class="modal-header">
+                <h3 id="videoModalTitle">Video Player</h3>
+                <button class="modal-close" id="videoModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video id="videoPlayer" class="video-player" controls>
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="top-bar">
+            <div class="container top-bar-container">
+                <div class="logo-section">
+                    <div class="logo">
+                        <a href="/" class="logo-link">
+                            <img id="website-logo" class="logo-image" src="" alt="Aliver Biopharm" style="display: none;">
+                            <h1 id="website-logo-text" class="logo-text">Aliver<span>Biopharm</span></h1>
+                        </a>
+                    </div>
+                </div>
+                <div class="search-section">
+                    <input type="text" class="search-bar" placeholder="Search resources, topics, questions...">
+                    <button class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="testimonial-section">
+                    <p>Join <span class="highlight">5000+</span> students and teachers excelling with our resources</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav-bar">
+            <div class="container nav-bar-container">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#preview-hub">Resources</a></li>
+                    <li><a href="#team-section">Our Team</a></li>
+                    <li><a href="#testimonials-section">Testimonials</a></li>
+                    <li><a href="#message-section">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero-section">
+        <div class="container section-content" id="hero-container"></div>
+    </section>
+
+    <!-- Preview Hub Section -->
+    <section id="preview-hub" class="preview-hub">
+        <div class="container section-content">
+            <div class="section-title">
+                <h2>Educational Resources</h2>
+                <p>Browse our collection of A-Level Biology and Pharmacy materials</p>
+            </div>
+            <div id="previewSectionsContainer"></div>
+        </div>
+    </section>
+
+    <!-- Team Members Section -->
+       <section id="team-section" class="team-section">
+        <div class="container section-content">
+            <div class="section-title">
+                <h2>Meet Our Expert Team</h2>
+                <p>Our dedicated team of biology and pharmacy educators with years of experience</p>
+            </div>
+            
+            <div class="team-filters" id="teamFilters"></div>
+            
+            <div id="teamContainer" class="team-container"></div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials-section" class="testimonials-section">
+        <div class="container section-content">
+            <div class="section-title">
+                <h2>Student & Educator Testimonials</h2>
+                <p>See what students and educators are saying about our resources</p>
+            </div>
+            <div id="testimonialsContainer" class="testimonials-container"></div>
+            <div class="testimonials-actions">
+                <button id="addTestimonialBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Share Your Experience
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Message Section -->
+    <section id="message-section" class="message-section">
+        <div class="container section-content">
+            <div class="section-title">
+                <h2>Send Us a Message</h2>
+                <p>Have questions or feedback? We'd love to hear from you</p>
+            </div>
+            <div class="message-card hidden" id="messageCard">
+                <h3>Contact Form</h3>
+                <form id="messageForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                    <div id="response" class="form-response"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content" id="footerContent"></div>
+            <div class="footer-bottom">
+                <p id="copyrightText">© 2023 Aliver Biopharm. All rights reserved.</p>
+                <div class="social-links" id="footerSocialLinks"></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Testimonial Modal -->
+    <div id="testimonialModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share Your Experience</h3>
+                <button class="modal-close" id="testimonialModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="testimonialForm">
+                    <div class="form-group">
+                        <label for="testimonialName">Your Name *</label>
+                        <input type="text" id="testimonialName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="testimonialPosition">Your Position (e.g., Student, Teacher)</label>
+                        <input type="text" id="testimonialPosition" name="position">
+                    </div>
+                    <div class="form-group">
+                        <label for="testimonialInstitution">Your Institution</label>
+                        <input type="text" id="testimonialInstitution" name="institution">
+                    </div>
+                    <div class="form-group">
+                        <label for="testimonialRating">Rating (1-5 stars)</label>
+                        <div class="rating-stars">
+                            <input type="radio" id="star5" name="rating" value="5">
+                            <label for="star5"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1"><i class="fas fa-star"></i></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="testimonialContent">Your Testimonial *</label>
+                        <textarea id="testimonialContent" name="content" rows="5" required placeholder="Share your experience with our educational resources..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Submit Testimonial</button>
+                        <button type="button" class="btn btn-outline" id="testimonialCancelBtn">Cancel</button>
+                    </div>
+                    <div id="testimonialResponse" class="form-response"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase client initialization
+        const supabaseUrl = 'https://vrcdqnbvwsvitzzakdsx.supabase.co';
+        const supabaseKey = 'sb_publishable_It871lhlS5lwndvtjIRIXQ_onK5AW1B';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        // DOM Elements
+        const elements = {
+            navLinks: document.getElementById('navLinks'),
+            footerContent: document.getElementById('footerContent'),
+            copyrightText: document.getElementById('copyrightText'),
+            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+            notificationContainer: document.getElementById('notificationContainer'),
+            loadingOverlay: document.getElementById('loading-overlay'),
+            loadingSpinner: document.getElementById('loadingSpinner'),
+            loadingQueueItems: document.getElementById('loadingQueueItems'),
+            footerSocialLinks: document.getElementById('footerSocialLinks'),
+            websiteLogo: document.getElementById('website-logo'),
+            websiteLogoText: document.getElementById('website-logo-text'),
+            previewSectionsContainer: document.getElementById('previewSectionsContainer'),
+            floatingMessageBtn: document.getElementById('floatingMessageBtn'),
+            messageCard: document.getElementById('messageCard'),
+            messageForm: document.getElementById('messageForm'),
+            responseEl: document.getElementById('response'),
+            heroContainer: document.getElementById('hero-container'),
+            dynamicTitle: document.getElementById('dynamic-title'),
+            testimonialsContainer: document.getElementById('testimonialsContainer'),
+            addTestimonialBtn: document.getElementById('addTestimonialBtn'),
+            testimonialModal: document.getElementById('testimonialModal'),
+            testimonialModalClose: document.getElementById('testimonialModalClose'),
+            testimonialCancelBtn: document.getElementById('testimonialCancelBtn'),
+            testimonialForm: document.getElementById('testimonialForm'),
+            testimonialResponse: document.getElementById('testimonialResponse'),
+            teamContainer: document.getElementById('teamContainer'),
+            teamFilters: document.getElementById('teamFilters'),
+            videoModal: document.getElementById('videoModal'),
+            videoModalClose: document.getElementById('videoModalClose'),
+            videoPlayer: document.getElementById('videoPlayer'),
+            videoModalTitle: document.getElementById('videoModalTitle'),
+            searchBar: document.querySelector('.search-bar'),
+            searchButton: document.querySelector('.search-button')
+        };
+
+        // Loading Queue Management
+        class LoadingQueue {
+            constructor(container) {
+                this.container = container;
+                this.items = new Map();
+            }
+
+            addItem(id, text) {
+                const item = document.createElement('div');
+                item.className = 'loading-item';
+                item.id = `loading-${id}`;
+                item.innerHTML = `
+                    <div class="loading-item-icon loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                    <div class="loading-item-text">${text}</div>
+                `;
+                this.container.appendChild(item);
+                this.items.set(id, item);
+            }
+
+            setSuccess(id) {
+                const item = this.items.get(id);
+                if (item) {
+                    item.classList.add('loaded');
+                    const icon = item.querySelector('.loading-item-icon');
+                    icon.className = 'loading-item-icon success';
+                    icon.innerHTML = '<i class="fas fa-check"></i>';
+                }
+            }
+
+            setError(id) {
+                const item = this.items.get(id);
+                if (item) {
+                    const icon = item.querySelector('.loading-item-icon');
+                    icon.className = 'loading-item-icon error';
+                    icon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                }
+            }
+
+            hide() {
+                this.container.parentElement.style.display = 'none';
+            }
+        }
+
+        // Initialize loading queue
+        const loadingQueue = new LoadingQueue(elements.loadingQueueItems);
+
+        // Notification System
+        class NotificationSystem {
+            constructor(container) {
+                this.container = container;
+                this.notifications = [];
+            }
+
+            show(title, message, type = 'info', duration = 5000) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                
+                const iconMap = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle'
+                };
+
+                notification.innerHTML = `
+                    <i class="notification-icon ${iconMap[type]}"></i>
+                    <div class="notification-content">
+                        <div class="notification-title">${title}</div>
+                        <div class="notification-message">${message}</div>
+                    </div>
+                    <button class="notification-close"><i class="fas fa-times"></i></button>
+                `;
+
+                this.container.appendChild(notification);
+                this.notifications.push(notification);
+
+                // Add close functionality
+                const closeBtn = notification.querySelector('.notification-close');
+                closeBtn.addEventListener('click', () => {
+                    this.remove(notification);
+                });
+
+                // Auto remove after duration
+                if (duration > 0) {
+                    setTimeout(() => {
+                        if (this.notifications.includes(notification)) {
+                            this.remove(notification);
+                        }
+                    }, duration);
+                }
+
+                return notification;
+            }
+
+            remove(notification) {
+                if (!this.notifications.includes(notification)) return;
+                
+                notification.classList.add('hiding');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                    this.notifications = this.notifications.filter(n => n !== notification);
+                }, 300);
+            }
+
+            clearAll() {
+                this.notifications.forEach(notification => {
+                    this.remove(notification);
+                });
+            }
+        }
+
+        // Initialize notification system
+                const notify = new NotificationSystem(elements.notificationContainer);
+
+        // Navigation and Search Functionality
+        elements.mobileMenuBtn.addEventListener('click', () => {
+            elements.navLinks.classList.toggle('active');
+            elements.mobileMenuBtn.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.nav-links a')) {
+                elements.navLinks.classList.remove('active');
+                elements.mobileMenuBtn.classList.remove('active');
+            }
+        });
+
+        // Enhanced Search functionality
+        let searchIndex = [];
+
+        // Build search index when page loads
+        function buildSearchIndex() {
+            searchIndex = [];
+            
+            // Index resources
+            document.querySelectorAll('.resource-item').forEach(item => {
+                const title = item.querySelector('.resource-title')?.textContent || '';
+                const description = item.querySelector('.resource-description')?.textContent || '';
+                const type = 'resource';
+                const section = 'Educational Resources';
+                
+                searchIndex.push({
+                    title,
+                    description,
+                    type,
+                    section,
+                    element: item,
+                    keywords: `${title} ${description} pdf document download`.toLowerCase()
+                });
+            });
+            
+            // Index notes
+            document.querySelectorAll('.note-item').forEach(item => {
+                const title = item.querySelector('.note-title')?.textContent || '';
+                const description = item.querySelector('.note-description')?.textContent || '';
+                const content = item.querySelector('.note-full-content')?.textContent || '';
+                const type = 'note';
+                const section = 'Educational Resources';
+                
+                searchIndex.push({
+                    title,
+                    description,
+                    content,
+                    type,
+                    section,
+                    element: item,
+                    keywords: `${title} ${description} ${content} study notes`.toLowerCase()
+                });
+            });
+            
+            // Index videos
+            document.querySelectorAll('.video-item').forEach(item => {
+                const title = item.querySelector('.video-title')?.textContent || '';
+                const description = item.querySelector('.video-description')?.textContent || '';
+                const type = 'video';
+                const section = 'Educational Resources';
+                
+                searchIndex.push({
+                    title,
+                    description,
+                    type,
+                    section,
+                    element: item,
+                    keywords: `${title} ${description} video tutorial education`.toLowerCase()
+                });
+            });
+            
+            // Index team members
+            document.querySelectorAll('.team-member-card').forEach(item => {
+                const name = item.querySelector('.team-member-name')?.textContent || '';
+                const role = item.querySelector('.team-member-role')?.textContent || '';
+                const department = item.querySelector('.team-member-department')?.textContent || '';
+                const bio = item.querySelector('.team-member-bio')?.textContent || '';
+                const type = 'team';
+                const section = 'Our Team';
+                
+                searchIndex.push({
+                    title: name,
+                    description: `${role} - ${department}`,
+                    content: bio,
+                    type,
+                    section,
+                    element: item,
+                    keywords: `${name} ${role} ${department} ${bio} expert teacher professor`.toLowerCase()
+                });
+            });
+            
+            // Index testimonials
+            document.querySelectorAll('.testimonial-card').forEach(item => {
+                const content = item.querySelector('.testimonial-content')?.textContent || '';
+                const author = item.querySelector('.testimonial-author-name')?.textContent || '';
+                const type = 'testimonial';
+                const section = 'Testimonials';
+                
+                searchIndex.push({
+                    title: `Testimonial by ${author}`,
+                    description: content.substring(0, 100) + '...',
+                    content,
+                    type,
+                    section,
+                    element: item,
+                    keywords: `${content} ${author} review feedback student teacher`.toLowerCase()
+                });
+            });
+        }
+
+        // Enhanced search function
+        function performSearch(query) {
+            if (query.trim() === '') {
+                notify.show('Search', 'Please enter a search term', 'info', 3000);
+                return;
+            }
+            
+            const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 2);
+            
+            if (searchTerms.length === 0) {
+                notify.show('Search', 'Please enter more specific search terms (at least 3 characters)', 'info', 3000);
+                return;
+            }
+            
+            const results = searchIndex.filter(item => {
+                // Check if all search terms are found in the keywords
+                return searchTerms.every(term => item.keywords.includes(term));
+            });
+            
+            if (results.length > 0) {
+                // Highlight and scroll to first result
+                highlightSearchResults(results);
+                
+                notify.show('Search Results', 
+                    `Found ${results.length} results for "${query}". The first result has been highlighted.`, 
+                    'success', 5000);
+                
+                // Create search results modal
+                showSearchResultsModal(results, query);
+            } else {
+                // Try fuzzy search if no exact matches
+                const fuzzyResults = performFuzzySearch(query);
+                
+                if (fuzzyResults.length > 0) {
+                    highlightSearchResults(fuzzyResults);
+                    notify.show('Search Results', 
+                        `Found ${fuzzyResults.length} similar results for "${query}". The first result has been highlighted.`, 
+                        'info', 5000);
+                    showSearchResultsModal(fuzzyResults, query);
+                } else {
+                    notify.show('Search Results', 
+                        `No results found for "${query}". Try different keywords or browse our categories.`, 
+                        'info', 5000);
+                }
+            }
+        }
+
+        // Fuzzy search for partial matches
+        function performFuzzySearch(query) {
+            const searchTerm = query.toLowerCase();
+            return searchIndex.filter(item => {
+                return item.keywords.includes(searchTerm) || 
+                       item.title.toLowerCase().includes(searchTerm) ||
+                       item.description.toLowerCase().includes(searchTerm);
+            });
+        }
+
+        // Highlight search results
+        function highlightSearchResults(results) {
+            // Remove previous highlights
+            document.querySelectorAll('.search-highlight').forEach(el => {
+                el.classList.remove('search-highlight');
+            });
+            
+            if (results.length > 0) {
+                const firstResult = results[0];
+                
+                // Add highlight class
+                firstResult.element.classList.add('search-highlight');
+                
+                // Scroll to the result
+                firstResult.element.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+                
+                // Remove highlight after 5 seconds
+                setTimeout(() => {
+                    firstResult.element.classList.remove('search-highlight');
+                }, 5000);
+            }
+        }
+
+        // Show search results in a modal
+        function showSearchResultsModal(results, query) {
+            // Remove existing modal if any
+            const existingModal = document.getElementById('searchResultsModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            const modalHTML = `
+                <div id="searchResultsModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Search Results for "${query}"</h3>
+                            <button class="modal-close" id="searchModalClose">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="search-results-summary">
+                                Found ${results.length} result${results.length !== 1 ? 's' : ''}
+                            </div>
+                            <div class="search-results-list">
+                                ${results.map((result, index) => `
+                                    <div class="search-result-item" data-index="${index}">
+                                        <div class="result-type ${result.type}">${result.type.toUpperCase()}</div>
+                                        <div class="result-title">${result.title}</div>
+                                        <div class="result-description">${result.description}</div>
+                                        <div class="result-section">${result.section}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            const modal = document.getElementById('searchResultsModal');
+            const closeBtn = document.getElementById('searchModalClose');
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            
+            // Close modal functionality
+            closeBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+            
+                        // Result item click functionality
+            modal.querySelectorAll('.search-result-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const index = parseInt(item.getAttribute('data-index'));
+                    const result = results[index];
+                    
+                    // Highlight and scroll to selected result
+                    highlightSearchResults([result]);
+                    
+                    // Close modal
+                    modal.classList.add('hidden');
+                });
+            });
+        }
+
+        // Initialize search when page loads
+        function initSearch() {
+            // Build search index
+            buildSearchIndex();
+            
+            // Search on Enter key
+            elements.searchBar.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch(this.value);
+                }
+            });
+            
+            // Search on button click
+            elements.searchButton.addEventListener('click', () => {
+                performSearch(elements.searchBar.value);
+            });
+        }
+
+        // Message Form Toggle
+        let isMessageFormVisible = false;
+        elements.floatingMessageBtn.addEventListener('click', () => {
+            isMessageFormVisible = !isMessageFormVisible;
+            
+            if (isMessageFormVisible) {
+                elements.messageCard.classList.remove('hidden');
+                elements.floatingMessageBtn.classList.add('active');
+                elements.floatingMessageBtn.querySelector('i').className = 'fas fa-times';
+                document.getElementById('message-section').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } else {
+                elements.messageCard.classList.add('hidden');
+                elements.floatingMessageBtn.classList.remove('active');
+                elements.floatingMessageBtn.querySelector('i').className = 'fas fa-comment';
+            }
+        });
+
+        // Message Form Submission
+        elements.messageForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            if (!name || !email || !subject || !message) {
+                elements.responseEl.textContent = "❌ Please fill in all required fields.";
+                elements.responseEl.className = "form-response error";
+                return;
+            }
+
+            elements.responseEl.textContent = "Sending...";
+            elements.responseEl.className = "form-response";
+
+            try {
+                const { error } = await supabase
+                    .from("contact_messages")
+                    .insert([{ 
+                        name: name, 
+                        email: email, 
+                        subject: subject, 
+                        message: message, 
+                        status: "unread",
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) {
+                    console.error('Supabase error:', error);
+                    elements.responseEl.textContent = "❌ Failed to send message. Please try again.";
+                    elements.responseEl.className = "form-response error";
+                } else {
+                    elements.responseEl.textContent = "✅ Message sent successfully!";
+                    elements.responseEl.className = "form-response success";
+                    
+                    notify.show('Message Sent', 'Thank you for your message. We will get back to you soon.', 'success', 5000);
+                    
+                    elements.messageForm.reset();
+                    
+                    setTimeout(() => {
+                        isMessageFormVisible = false;
+                        elements.messageCard.classList.add('hidden');
+                        elements.floatingMessageBtn.classList.remove('active');
+                        elements.floatingMessageBtn.querySelector('i').className = 'fas fa-comment';
+                        elements.responseEl.textContent = '';
+                        elements.responseEl.className = '';
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Unexpected error:', error);
+                elements.responseEl.textContent = "❌ An unexpected error occurred. Please try again.";
+                elements.responseEl.className = "form-response error";
+            }
+        });
+
+        // Video Modal Functionality
+        function initVideoModal() {
+            elements.videoModalClose.addEventListener('click', () => {
+                elements.videoModal.classList.add('hidden');
+                elements.videoPlayer.pause();
+                elements.videoPlayer.currentTime = 0;
+            });
+
+            elements.videoModal.addEventListener('click', (e) => {
+                if (e.target === elements.videoModal) {
+                    elements.videoModal.classList.add('hidden');
+                    elements.videoPlayer.pause();
+                    elements.videoPlayer.currentTime = 0;
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !elements.videoModal.classList.contains('hidden')) {
+                    elements.videoModal.classList.add('hidden');
+                    elements.videoPlayer.pause();
+                    elements.videoPlayer.currentTime = 0;
+                }
+            });
+        }
+
+        // Function to play video in modal
+        function playVideo(videoUrl, title) {
+            elements.videoPlayer.src = videoUrl;
+            elements.videoModalTitle.textContent = title || 'Video Player';
+            elements.videoModal.classList.remove('hidden');
+            elements.videoPlayer.play();
+        }
+
+        // Site Settings
+        async function loadSiteSettings() {
+            loadingQueue.addItem('site-settings', 'Loading site settings');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('site_settings')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('setting_order', { ascending: true });
+
+                if (error) throw new Error(`Database error: ${error.message}`);
+
+                if (data && data.length > 0) {
+                    const settings = {};
+                    data.forEach(setting => {
+                        settings[setting.setting_key] = setting.setting_value;
+                    });
+
+                    if (settings.copyright_text) {
+                        elements.copyrightText.textContent = settings.copyright_text;
+                    }
+
+                    if (settings.website_logo_url) {
+                        elements.websiteLogo.src = settings.website_logo_url;
+                        elements.websiteLogo.alt = settings.website_logo_alt || 'Aliver Biopharm';
+                        elements.websiteLogo.style.display = 'block';
+                        elements.websiteLogoText.style.display = 'none';
+                    }
+
+                    loadingQueue.setSuccess('site-settings');
+                } else {
+                    loadingQueue.setSuccess('site-settings');
+                }
+                
+                return data;
+            } catch (error) {
+                loadingQueue.setError('site-settings');
+                console.error('Error loading site settings:', error);
+                return null;
+            }
+        }
+
+        // Navigation Links
+        async function loadNavigationLinks() {
+            loadingQueue.addItem('navigation', 'Loading navigation menu');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('navigation_links')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('order_number', { ascending: true });
+
+                if (error) throw new Error(`Database error: ${error.message}`);
+
+                if (data && data.length > 0) {
+                    elements.navLinks.innerHTML = data.map(link => 
+                        `<li><a href="${link.url}">${link.title}</a></li>`
+                    ).join('');
+                    
+                    loadingQueue.setSuccess('navigation');
+                } else {
+                    elements.navLinks.innerHTML = `
+                        <li><a href="#preview-hub">Resources</a></li>
+                        <li><a href="#team-section">Our Team</a></li>
+                        <li><a href="#testimonials-section">Testimonials</a></li>
+                        <li><a href="#message-section">Contact</a></li>
+                    `;
+                    
+                    loadingQueue.setSuccess('navigation');
+                }
+                
+                return data;
+            } catch (error) {
+                loadingQueue.setError('navigation');
+                elements.navLinks.innerHTML = `
+                    <li><a href="#preview-hub">Resources</a></li>
+                    <li><a href="#team-section">Our Team</a></li>
+                    <li><a href="#testimonials-section">Testimonials</a></li>
+                    <li><a href="#message-section">Contact</a></li>
+                `;
+                
+                console.error('Error loading navigation links:', error);
+                return null;
+            }
+        }
+
+        // Social Links
+                async function loadSocialLinks() {
+            loadingQueue.addItem('social-links', 'Loading social media links');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('social_links')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('order_number', { ascending: true });
+
+                if (error) throw new Error(`Database error: ${error.message}`);
+
+                if (data && data.length > 0) {
+                    let socialLinksHTML = '';
+                    
+                    data.forEach(link => {
+                        const platformIcon = getSocialMediaIcon(link.platform_name, link.profile_url);
+                        const platformColor = getSocialMediaColor(link.platform_name, link.profile_url);
+                        
+                        if (link.profile_url) {
+                            socialLinksHTML += `
+                                <a href="${link.profile_url}" 
+                                   class="social-links" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer"
+                                   style="background-color: ${platformColor};"
+                                   title="${link.platform_name || 'Social Media'}">
+                                    <i class="${platformIcon}"></i>
+                                </a>
+                            `;
+                        }
+                    });
+                    
+                    elements.footerSocialLinks.innerHTML = socialLinksHTML;
+                    loadingQueue.setSuccess('social-links');
+                } else {
+                    elements.footerSocialLinks.innerHTML = `
+                        <a href="#" class="social-links" style="background-color: #4267B2;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-links" style="background-color: #1DA1F2;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-links" style="background-color: #E4405F;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-links" style="background-color: #0077B5;"><i class="fab fa-linkedin-in"></i></a>
+                    `;
+                    
+                    loadingQueue.setSuccess('social-links');
+                }
+                
+                return data;
+            } catch (error) {
+                loadingQueue.setError('social-links');
+                elements.footerSocialLinks.innerHTML = `
+                    <a href="#" class="social-links" style="background-color: #4267B2;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-links" style="background-color: #1DA1F2;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-links" style="background-color: #E4405F;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-links" style="background-color: #0077B5;"><i class="fab fa-linkedin-in"></i></a>
+                `;
+                
+                console.error('Error loading social links:', error);
+                return null;
+            }
+        }
+
+        function getSocialMediaIcon(platformName, profileUrl) {
+            if (!platformName && !profileUrl) return 'fab fa-link';
+            
+            const platform = (platformName || '').toLowerCase();
+            const url = (profileUrl || '').toLowerCase();
+            
+            if (platform.includes('facebook') || url.includes('facebook')) {
+                return 'fab fa-facebook-f';
+            } else if (platform.includes('twitter') || url.includes('twitter') || url.includes('x.com')) {
+                return 'fab fa-twitter';
+            } else if (platform.includes('instagram') || url.includes('instagram')) {
+                return 'fab fa-instagram';
+            } else if (platform.includes('linkedin') || url.includes('linkedin')) {
+                return 'fab fa-linkedin-in';
+            } else if (platform.includes('youtube') || url.includes('youtube')) {
+                return 'fab fa-youtube';
+            } else {
+                return 'fab fa-link';
+            }
+        }
+
+        function getSocialMediaColor(platformName, profileUrl) {
+            if (!platformName && !profileUrl) return '#1a5276';
+            
+            const platform = (platformName || '').toLowerCase();
+            const url = (profileUrl || '').toLowerCase();
+            
+            if (platform.includes('facebook') || url.includes('facebook')) {
+                return '#4267B2';
+            } else if (platform.includes('twitter') || url.includes('twitter') || url.includes('x.com')) {
+                return '#1DA1F2';
+            } else if (platform.includes('instagram') || url.includes('instagram')) {
+                return '#E4405F';
+            } else if (platform.includes('linkedin') || url.includes('linkedin')) {
+                return '#0077B5';
+            } else if (platform.includes('youtube') || url.includes('youtube')) {
+                return '#FF0000';
+            } else {
+                return '#1a5276';
+            }
+        }
+
+        // Footer Content
+        async function loadFooterContent() {
+            loadingQueue.addItem('footer', 'Loading footer content');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('footer')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('group_order', { ascending: true })
+                    .order('link_order', { ascending: true });
+
+                if (error) throw new Error(`Database error: ${error.message}`);
+
+                if (data && data.length > 0) {
+                    const groupedData = data.reduce((groups, item) => {
+                        if (!groups[item.group_name]) {
+                            groups[item.group_name] = [];
+                        }
+                        groups[item.group_name].push(item);
+                        return groups;
+                    }, {});
+
+                    let footerHTML = `
+                        <div class="footer-about">
+                            <h3>Aliver Biopharm</h3>
+                            <p>Your comprehensive resource for A-Level Biology and Pharmacy education.</p>
+                            <div class="social-links" id="footerAboutSocialLinks"></div>
+                        </div>
+                    `;
+
+                    for (const [groupName, links] of Object.entries(groupedData)) {
+                        footerHTML += `
+                            <div class="footer-links">
+                                <h4>${groupName}</h4>
+                                <ul>
+                                    ${links.map(link => 
+                                        `<li><a href="${link.link_url}">${link.link_title}</a></li>`
+                                    ).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+
+                    elements.footerContent.innerHTML = footerHTML;
+
+                    const footerAboutSocialLinks = document.getElementById('footerAboutSocialLinks');
+                    if (footerAboutSocialLinks) {
+                        setTimeout(() => {
+                            footerAboutSocialLinks.innerHTML = elements.footerSocialLinks.innerHTML;
+                        }, 100);
+                    }
+                    
+                    loadingQueue.setSuccess('footer');
+                } else {
+                    renderFallbackFooter();
+                    loadingQueue.setSuccess('footer');
+                }
+                
+                return data;
+            } catch (error) {
+                loadingQueue.setError('footer');
+                renderFallbackFooter();
+                console.error('Error loading footer content:', error);
+                return null;
+            }
+        }
+
+        function renderFallbackFooter() {
+            elements.footerContent.innerHTML = `
+                <div class="footer-about">
+                    <h3>Aliver Biopharm</h3>
+                    <p>Your comprehensive resource for A-Level Biology and Pharmacy education.</p>
+                    <div class="social-links">
+                        <a href="#" style="background-color: #4267B2;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" style="background-color: #1DA1F2;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="background-color: #E4405F;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="background-color: #0077B5;"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#preview-hub">Educational Materials</a></li>
+                        <li><a href="#team-section">Our Team</a></li>
+                        <li><a href="#testimonials-section">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Study Guides</h4>
+                    <ul>
+                        <li><a href="#">Revision Tips</a></li>
+                        <li><a href="#">Exam Preparation</a></li>
+                        <li><a href="#">Practical Skills</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#message-section">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Preview Hub Content
+        async function loadPreviewHub() {
+            loadingQueue.addItem('preview-hub', 'Loading educational resources');
+            
+            try {
+                const { data: sections, error: sectionsError } = await supabase
+                    .from('sections')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('section_order', { ascending: true });
+
+                if (sectionsError) throw new Error(`Database error: ${sectionsError.message}`);
+
+                if (sections && sections.length > 0) {
+                    let sectionsHTML = '';
+                    
+                    for (const section of sections) {
+                        const { data: contentItems, error: contentError } = await supabase
+                            .from('content_items')
+                            .select('*')
+                            .eq('section_id', section.id)
+                            .eq('is_active', true)
+                            .order('display_order', { ascending: true });
+
+                        if (contentError) {
+                            console.error(`Error loading content for section ${section.id}:`, contentError);
+                            continue;
+                        }
+
+                        if (contentItems && contentItems.length > 0) {
+                            sectionsHTML += `
+                                <div class="preview-section" id="${section.section_type || `section-${section.id}`}">
+                                    <h3 class="preview-section-title">${section.title}</h3>
+                            `;
+                            
+                            const pdfs = contentItems.filter(item => 
+                                item.content_type === 'pdf' || 
+                                (item.file_url && item.file_url.toLowerCase().endsWith('.pdf')) ||
+                                (item.file_name && item.file_name.toLowerCase().endsWith('.pdf'))
+                            );
+                            
+                            const notes = contentItems.filter(item => 
+                                item.content_type === 'note' || 
+                                item.content_type === 'text' ||
+                                item.content_type === 'document'
+                            );
+                            
+                            const videos = contentItems.filter(item => 
+                                item.content_type === 'video' ||
+                                (item.file_url && (item.file_url.toLowerCase().endsWith('.mp4') || 
+                                                   item.file_url.toLowerCase().endsWith('.webm') ||
+                                                   item.file_url.toLowerCase().endsWith('.ogg')))
+                            );
+                            
+                            if (pdfs.length > 0) {
+                                sectionsHTML += `
+                                    <h4 style="margin-bottom: 15px; color: var(--primary);">PDF Documents</h4>
+                                    <div class="resources-grid">
+                                `;
+                                
+                                pdfs.forEach(item => {
+                                    sectionsHTML += `
+                                        <div class="resource-item">
+                                            <div class="resource-icon">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </div>
+                                            <div class="resource-info">
+                                                <div class="resource-title">${item.title || 'PDF Document'}</div>
+                                                <div class="resource-description">${item.description || 'Downloadable PDF document'}</div>
+                                                <div class="resource-meta">
+                                                    <span>PDF</span>
+                                                    <span>${item.file_size || ''}</span>
+                                                </div>
+                                                <a href="${item.file_url || item.url || '#'}" class="resource-link" download target="_blank">Download</a>
+                                            </div>
+                                        </div>
+                                    `;
+                                });
+                                
+                                sectionsHTML += `</div>`;
+                            }
+                            
+                            if (notes.length > 0) {
+                                sectionsHTML += `
+                                    <h4 style="margin-bottom: 15px; color: var(--primary); margin-top: 30px;">Study Notes</h4>
+                                    <div class="notes-grid">
+                                `;
+                                
+                                notes.forEach(item => {
+                                    sectionsHTML += `
+                                        <div class="note-item">
+                                            <div class="note-title">${item.title || 'Study Note'}</div>
+                                            <div class="note-description">${item.description || 'Educational note'}</div>
+                                            <div class="note-full-content" style="margin-top: 15px; font-size: 14px; line-height: 1.6; color: var(--text);">
+                                                ${item.content || 'No additional content available.'}
+                                            </div>
+                                            ${item.file_url ? `<a href="${item.file_url}" class="note-link" target="_blank">View Full Note</a>` : ''}
+                                        </div>
+                                    `;
+                                });
+                                
+                                sectionsHTML += `</div>`;
+                            }
+                            
+                            if (videos.length > 0) {
+                                sectionsHTML += `
+                                    <h4 style="margin-bottom: 15px; color: var(--primary); margin-top: 30px;">Educational Videos</h4>
+                                    <div class="videos-grid">
+                                `;
+                                
+                                videos.forEach(item => {
+                                    const thumbnailUrl = item.thumbnail_url || 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80';
+                                    
+                                    sectionsHTML += `
+                                        <div class="video-item">
+                                            <div class="video-thumbnail" onclick="playVideo('${item.file_url || item.url}', '${item.title || 'Video'}')">
+                                                <img src="${thumbnailUrl}" alt="${item.title || 'Educational Video'}">
+                                                <div class="video-play-button">
+                                                    <i class="fas fa-play"></i>
+                                                </div>
+                                            </div>
+                                            <div class="video-info">
+                                                <div class="video-title">${item.title || 'Educational Video'}</div>
+                                                <div class="video-description">${item.description || 'Watch this educational video'}</div>
+                                                <a href="${item.file_url || item.url || '#'}" class="video-link" target="_blank">Open Video</a>
+                                            </div>
+                                        </div>
+                                    `;
+                                });
+                                
+                                sectionsHTML += `</div>`;
+                            }
+
+                            sectionsHTML += `</div>`;
+                        }
+                    }
+                    
+                    elements.previewSectionsContainer.innerHTML = sectionsHTML;
+                    loadingQueue.setSuccess('preview-hub');
+                } else {
+                    renderFallbackPreviewHub();
+                    loadingQueue.setSuccess('preview-hub');
+                }
+            } catch (error) {
+                loadingQueue.setError('preview-hub');
+                renderFallbackPreviewHub();
+                console.error('Error loading preview hub:', error);
+            }
+        }
+
+        function renderFallbackPreviewHub() {
+                   elements.previewSectionsContainer.innerHTML = `
+                <div class="preview-section">
+                    <h3 class="preview-section-title">Biology Resources</h3>
+                    <h4 style="margin-bottom: 15px; color: var(--primary);">PDF Documents</h4>
+                    <div class="resources-grid">
+                        <div class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="resource-info">
+                                <div class="resource-title">Cell Biology Notes</div>
+                                <div class="resource-description">Comprehensive notes on cell structure and function</div>
+                                <div class="resource-meta">
+                                    <span>PDF</span>
+                                    <span>2.4 MB</span>
+                                </div>
+                                <a href="#" class="resource-link" download>Download</a>
+                            </div>
+                        </div>
+                        <div class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="resource-info">
+                                <div class="resource-title">Genetics Study Guide</div>
+                                <div class="resource-description">Mendelian genetics and molecular biology</div>
+                                <div class="resource-meta">
+                                    <span>PDF</span>
+                                    <span>3.1 MB</span>
+                                </div>
+                                <a href="#" class="resource-link" download>Download</a>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 style="margin-bottom: 15px; color: var(--primary); margin-top: 30px;">Study Notes</h4>
+                    <div class="notes-grid">
+                        <div class="note-item">
+                            <div class="note-title">Human Physiology</div>
+                            <div class="note-description">Detailed notes on human body systems</div>
+                            <div class="note-full-content" style="margin-top: 15px; font-size: 14px; line-height: 1.6; color: var(--text);">
+                                Human physiology covers the study of how the human body functions. This includes the cardiovascular system, respiratory system, nervous system, and more. Understanding physiology is crucial for medical and biological sciences.
+                            </div>
+                            <a href="#" class="note-link">View Full Note</a>
+                        </div>
+                        <div class="note-item">
+                            <div class="note-title">Biochemistry Basics</div>
+                            <div class="note-description">Fundamental concepts in biochemistry</div>
+                            <div class="note-full-content" style="margin-top: 15px; font-size: 14px; line-height: 1.6; color: var(--text);">
+                                Biochemistry explores the chemical processes within living organisms. Key topics include enzyme kinetics, metabolic pathways, and molecular genetics. This field bridges biology and chemistry.
+                            </div>
+                            <a href="#" class="note-link">View Full Note</a>
+                        </div>
+                    </div>
+                    <h4 style="margin-bottom: 15px; color: var(--primary); margin-top: 30px;">Educational Videos</h4>
+                    <div class="videos-grid">
+                        <div class="video-item">
+                            <div class="video-thumbnail" onclick="playVideo('https://example.com/video1.mp4', 'Cell Biology Introduction')">
+                                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="Cell Biology">
+                                <div class="video-play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                            <div class="video-info">
+                                <div class="video-title">Cell Biology Introduction</div>
+                                <div class="video-description">Learn the basics of cell structure and function</div>
+                                <a href="#" class="video-link" target="_blank">Open Video</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Team Members
+                async function loadTeamMembers() {
+            loadingQueue.addItem('team-members', 'Loading team members');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('team_members')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('display_order', { ascending: true });
+
+                if (error) throw new Error(`Database error: ${error.message}`);
+
+                if (data && data.length > 0) {
+                    const departments = [...new Set(data.map(member => member.department))];
+                    
+                    elements.teamFilters.innerHTML = `
+                        <button class="filter-btn active" data-department="all">All Team</button>
+                        ${departments.map(dept => 
+                            `<button class="filter-btn" data-department="${dept}">${dept}</button>`
+                        ).join('')}
+                    `;
+                    
+                    let teamHTML = '';
+                    
+                    data.forEach(member => {
+                        teamHTML += `
+                            <div class="team-member-card" data-department="${member.department}">
+                                <img src="${member.image_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'}" 
+                                     alt="${member.name}" class="team-member-image">
+                                <h3 class="team-member-name">${member.name}</h3>
+                                <div class="team-member-role">${member.role}</div>
+                                <div class="team-member-department">${member.department}</div>
+                                <div class="team-member-bio">${member.bio || 'No bio available.'}</div>
+                                
+                                ${member.expertise ? `
+                                    <div class="team-member-expertise">
+                                        ${member.expertise.split(',').map(skill => 
+                                            `<span class="expertise-tag">${skill.trim()}</span>`
+                                        ).join('')}
+                                    </div>
+                                ` : ''}
+                                
+                                ${member.years_experience ? `
+                                    <div class="team-member-experience">
+                                        <i class="fas fa-clock"></i> ${member.years_experience} years experience
+                                    </div>
+                                ` : ''}
+                                
+                                <div class="team-member-social">
+                                    ${member.linkedin_url ? `
+                                        <a href="${member.linkedin_url}" class="social-icon" target="_blank" rel="noopener noreferrer">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                    ` : ''}
+                                    
+                                    ${member.twitter_url ? `
+                                        <a href="${member.twitter_url}" class="social-icon" target="_blank" rel="noopener noreferrer">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    ` : ''}
+                                    
+                                    ${member.email ? `
+                                        <a href="mailto:${member.email}" class="social-icon">
+                                            <i class="fas fa-envelope"></i>
+                                        </a>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    elements.teamContainer.innerHTML = teamHTML;
+                    
+                    const filterButtons = elements.teamFilters.querySelectorAll('.filter-btn');
+                    filterButtons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            filterButtons.forEach(btn => btn.classList.remove('active'));
+                            button.classList.add('active');
+                            
+                            const department = button.getAttribute('data-department');
+                            filterTeamMembers(department);
+                        });
+                    });
+                    
+                    loadingQueue.setSuccess('team-members');
+                } else {
+                    renderFallbackTeamMembers();
+                    loadingQueue.setSuccess('team-members');
+                }
+            } catch (error) {
+                loadingQueue.setError('team-members');
+                renderFallbackTeamMembers();
+                console.error('Error loading team members:', error);
+            }
+        }
+
+        function renderFallbackTeamMembers() {
+            elements.teamFilters.innerHTML = `
+                <button class="filter-btn active" data-department="all">All Team</button>
+                <button class="filter-btn" data-department="Biology">Biology</button>
+                <button class="filter-btn" data-department="Pharmacy">Pharmacy</button>
+            `;
+            
+            elements.teamContainer.innerHTML = `
+                <div class="team-member-card" data-department="Biology">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" 
+                         alt="Dr. Sarah Johnson" class="team-member-image">
+                    <h3 class="team-member-name">Dr. Sarah Johnson</h3>
+                    <div class="team-member-role">Senior Biology Lecturer</div>
+                    <div class="team-member-department">Biology</div>
+                    <div class="team-member-bio">Dr. Johnson has over 15 years of experience teaching A-Level Biology. She specializes in molecular biology and genetics, with multiple publications in peer-reviewed journals.</div>
+                    <div class="team-member-expertise">
+                        <span class="expertise-tag">Molecular Biology</span>
+                        <span class="expertise-tag">Genetics</span>
+                        <span class="expertise-tag">Cell Biology</span>
+                    </div>
+                    <div class="team-member-experience">
+                        <i class="fas fa-clock"></i> 15+ years experience
+                    </div>
+                    <div class="team-member-social">
+                        <a href="#" class="social-icon" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-icon" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="mailto:sarah@example.com" class="social-icon">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="team-member-card" data-department="Pharmacy">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" 
+                         alt="Prof. Michael Chen" class="team-member-image">
+                    <h3 class="team-member-name">Prof. Michael Chen</h3>
+                    <div class="team-member-role">Pharmacy Department Head</div>
+                    <div class="team-member-department">Pharmacy</div>
+                    <div class="team-member-bio">Professor Chen leads our pharmacy education program with over 20 years of academic and research experience. His expertise includes pharmacology, medicinal chemistry, and drug development.</div>
+                    <div class="team-member-expertise">
+                        <span class="expertise-tag">Pharmacology</span>
+                        <span class="expertise-tag">Medicinal Chemistry</span>
+                        <span class="expertise-tag">Drug Development</span>
+                    </div>
+                    <div class="team-member-experience">
+                        <i class="fas fa-clock"></i> 20+ years experience
+                    </div>
+                    <div class="team-member-social">
+                        <a href="#" class="social-icon" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="mailto:michael@example.com" class="social-icon">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            const filterButtons = elements.teamFilters.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const department = button.getAttribute('data-department');
+                    filterTeamMembers(department);
+                });
+            });
+        }
+
+        function filterTeamMembers(department) {
+            const teamCards = elements.teamContainer.querySelectorAll('.team-member-card');
+            
+            teamCards.forEach(card => {
+                if (department === 'all' || card.getAttribute('data-department') === department) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Testimonials
+        async function loadTestimonials() {
+            loadingQueue.addItem('testimonials', 'Loading testimonials');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('testimonials')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('display_order', { ascending: true });
+
+                if (error) throw new Error(`Database error: ${error.message}`);
+
+                if (data && data.length > 0) {
+                    let testimonialsHTML = '';
+                    
+                    data.forEach(testimonial => {
+                        testimonialsHTML += createTestimonialHTML(testimonial);
+                    });
+                    
+                    elements.testimonialsContainer.innerHTML = testimonialsHTML;
+                    loadingQueue.setSuccess('testimonials');
+                } else {
+                    renderFallbackTestimonials();
+                    loadingQueue.setSuccess('testimonials');
+                }
+            } catch (error) {
+                loadingQueue.setError('testimonials');
+                renderFallbackTestimonials();
+                console.error('Error loading testimonials:', error);
+            }
+        }
+
+        function createTestimonialHTML(testimonial) {
+            let starsHTML = '';
+            const rating = testimonial.rating || 5;
+            
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    starsHTML += '<i class="fas fa-star star"></i>';
+                } else {
+                    starsHTML += '<i class="fas fa-star star empty"></i>';
+                }
+            }
+            
+            const nameParts = testimonial.author_name.split(' ');
+            const initials = nameParts.length >= 2 
+                ? nameParts[0].charAt(0) + nameParts[1].charAt(0)
+                : testimonial.author_name.substring(0, 2);
+            
+            return `
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        ${starsHTML}
+                    </div>
+                    <div class="testimonial-content">
+                        "${testimonial.content}"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-author-img">
+                            ${initials.toUpperCase()}
+                        </div>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-author-name">${testimonial.author_name}</div>
+                            <div class="testimonial-author-meta">
+                                ${testimonial.author_position || ''}
+                                ${testimonial.author_institution ? `, ${testimonial.author_institution}` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFallbackTestimonials() {
+                   elements.testimonialsContainer.innerHTML = `
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        "The biology notes and resources from Aliver Biopharm helped me achieve an A* in my A-Level exams. The explanations are clear and the diagrams are extremely helpful for visual learners."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-author-img">
+                            SJ
+                        </div>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-author-name">Sarah Johnson</div>
+                            <div class="testimonial-author-meta">A-Level Student, Cambridge College</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        "As a pharmacy educator, I find the materials provided by Aliver Biopharm to be comprehensive and well-structured. They save me hours of preparation time and my students find them engaging."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-author-img">
+                            MC
+                        </div>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-author-name">Dr. Michael Chen</div>
+                            <div class="testimonial-author-meta">Pharmacy Lecturer, University of London</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star"></i>
+                        <i class="fas fa-star star empty"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        "The trial questions with detailed solutions are perfect for exam preparation. I've seen significant improvement in my students' performance since incorporating these resources into my teaching."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-author-img">
+                            ED
+                        </div>
+                        <div class="testimonial-author-info">
+                            <div class="testimonial-author-name">Emma Davis</div>
+                            <div class="testimonial-author-meta">Biology Teacher, Manchester High School</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Testimonial Modal
+        function initTestimonialModal() {
+            elements.addTestimonialBtn.addEventListener('click', () => {
+                elements.testimonialModal.classList.remove('hidden');
+            });
+
+            elements.testimonialModalClose.addEventListener('click', () => {
+                elements.testimonialModal.classList.add('hidden');
+                elements.testimonialForm.reset();
+                elements.testimonialResponse.textContent = '';
+                elements.testimonialResponse.className = '';
+            });
+
+            elements.testimonialCancelBtn.addEventListener('click', () => {
+                elements.testimonialModal.classList.add('hidden');
+                elements.testimonialForm.reset();
+                elements.testimonialResponse.textContent = '';
+                elements.testimonialResponse.className = '';
+            });
+
+            elements.testimonialModal.addEventListener('click', (e) => {
+                if (e.target === elements.testimonialModal) {
+                    elements.testimonialModal.classList.add('hidden');
+                    elements.testimonialForm.reset();
+                    elements.testimonialResponse.textContent = '';
+                    elements.testimonialResponse.className = '';
+                }
+            });
+
+            elements.testimonialForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('testimonialName').value.trim();
+                const position = document.getElementById('testimonialPosition').value.trim();
+                const institution = document.getElementById('testimonialInstitution').value.trim();
+                const content = document.getElementById('testimonialContent').value.trim();
+                
+                const ratingInput = elements.testimonialForm.querySelector('input[name="rating"]:checked');
+                const rating = ratingInput ? parseInt(ratingInput.value) : 5;
+                
+                if (!name || !content) {
+                    elements.testimonialResponse.textContent = "❌ Please fill in all required fields (Name and Testimonial).";
+                    elements.testimonialResponse.className = "form-response error";
+                    return;
+                }
+
+                elements.testimonialResponse.textContent = "Submitting...";
+                elements.testimonialResponse.className = "form-response";
+
+                try {
+                    const { data, error } = await supabase
+                        .from("testimonials")
+                        .insert([{ 
+                            author_name: name, 
+                            author_position: position || null,
+                            author_institution: institution || null,
+                            content: content,
+                            rating: rating,
+                            is_active: true, // Changed to true to make it appear immediately
+                            created_at: new Date().toISOString()
+                        }])
+                        .select(); // Add select to get the inserted data
+
+                    if (error) {
+                        console.error('Supabase error:', error);
+                        elements.testimonialResponse.textContent = "❌ Failed to submit testimonial. Please try again.";
+                        elements.testimonialResponse.className = "form-response error";
+                    } else {
+                        elements.testimonialResponse.textContent = "✅ Thank you for sharing your experience! Your testimonial has been published.";
+                        elements.testimonialResponse.className = "form-response success";
+                        
+                        // Add the new testimonial to the DOM immediately
+                        if (data && data.length > 0) {
+                            const newTestimonial = data[0];
+                            addTestimonialToDOM(newTestimonial);
+                        }
+                        
+                        notify.show('Testimonial Submitted', 'Thank you for your feedback! It has been published.', 'success', 5000);
+                        
+                        setTimeout(() => {
+                            elements.testimonialForm.reset();
+                            elements.testimonialModal.classList.add('hidden');
+                            elements.testimonialResponse.textContent = '';
+                            elements.testimonialResponse.className = '';
+                        }, 3000);
+                    }
+                } catch (error) {
+                    console.error('Unexpected error:', error);
+                    elements.testimonialResponse.textContent = "❌ An unexpected error occurred. Please try again.";
+                    elements.testimonialResponse.className = "form-response error";
+                }
+            });
+        }
+
+        // Function to add testimonial to DOM
+        function addTestimonialToDOM(testimonial) {
+            const testimonialHTML = createTestimonialHTML(testimonial);
+            
+            // Add the new testimonial at the beginning of the container
+            elements.testimonialsContainer.insertAdjacentHTML('afterbegin', testimonialHTML);
+            
+            // Rebuild search index to include the new testimonial
+            buildSearchIndex();
+        }
+
+        // Hero Section
+        async function renderPremiumHero() {
+            loadingQueue.addItem('hero-section', 'Loading hero section');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('hero_section')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: false })
+                    .limit(1);
+
+                if (error) throw new Error(`Database error: ${error.message}`);
+
+                if (data && data.length > 0) {
+                    const hero = data[0];
+                    
+                    if (hero.title) {
+                        elements.dynamicTitle.textContent = hero.title + ' - Aliver Biopharm';
+                    }
+                    
+                    let heroHTML = '';
+                    
+                    if (hero.video_url) {
+                        heroHTML += `
+                            <video class="hero-video" autoplay muted loop>
+                                <source src="${hero.video_url}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        `;
+                    } else if (hero.image_url) {
+                        heroHTML += `
+                            <img src="${hero.image_url}" alt="${hero.title || 'Hero Image'}" class="hero-image">
+                        `;
+                    }
+                    
+                    heroHTML += `
+                        <div class="hero-content">
+                            <div class="${hero.animation_type || 'fadeIn'}" style="animation-duration: 1s;">
+                                ${hero.title ? `<h2>${hero.title}</h2>` : ''}
+                                ${hero.subtitle ? `<p>${hero.subtitle}</p>` : ''}
+                                
+                                ${hero.primary_button_text || hero.secondary_button_text ? `
+                                    <div>
+                                        ${hero.primary_button_text ? `
+                                            <a href="${hero.primary_button_link || '#preview-hub'}" class="btn btn-premium">
+                                                <i class="fas fa-rocket"></i> ${hero.primary_button_text}
+                                            </a>
+                                        ` : ''}
+                                        ${hero.secondary_button_text ? `
+                                            <a href="${hero.secondary_button_link || '#message-section'}" class="btn btn-outline">
+                                                <i class="fas fa-comments"></i> ${hero.secondary_button_text}
+                                            </a>
+                                        ` : ''}
+                                    </div>
+                                ` : ''}
+                                
+                                <div class="hero-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-number" data-count="5000">0</span>
+                                        <span class="stat-label">Students Helped</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" data-count="98">0</span>
+                                        <span class="stat-label">Success Rate</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" data-count="1000">0</span>
+                                        <span class="stat-label">Resources</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="scroll-indicator" onclick="document.getElementById('preview-hub').scrollIntoView({ behavior: 'smooth' })">
+                            <i class="fas fa-chevron-down fa-2x"></i>
+                        </div>
+                    `;
+                    
+                    elements.heroContainer.innerHTML = heroHTML;
+                    
+                    addParticlesEffect();
+                                        startCounters();
+                    loadingQueue.setSuccess('hero-section');
+                } else {
+                    renderFallbackHero();
+                    loadingQueue.setSuccess('hero-section');
+                }
+            } catch (error) {
+                loadingQueue.setError('hero-section');
+                renderFallbackHero();
+                console.error('Error loading hero section:', error);
+            }
+        }
+
+        function renderFallbackHero() {
+            elements.heroContainer.innerHTML = `
+                <div class="hero-content">
+                    <div class="fadeIn" style="animation-duration: 1s;">
+                        <h2>A-Level Biology & Pharmacy Education Hub</h2>
+                        <p>Your comprehensive resource for A-Level Biology and Pharmacy education materials. Access notes, videos, practice questions, and expert guidance.</p>
+                        
+                        <div>
+                            <a href="#preview-hub" class="btn btn-premium">
+                                <i class="fas fa-rocket"></i> Explore Resources
+                            </a>
+                            <a href="#message-section" class="btn btn-outline">
+                                <i class="fas fa-comments"></i> Contact Us
+                            </a>
+                        </div>
+                        
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="5000">0</span>
+                                <span class="stat-label">Students Helped</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="98">0</span>
+                                <span class="stat-label">Success Rate</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="1000">0</span>
+                                <span class="stat-label">Resources</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-indicator" onclick="document.getElementById('preview-hub').scrollIntoView({ behavior: 'smooth' })">
+                    <i class="fas fa-chevron-down fa-2x"></i>
+                </div>
+            `;
+            
+            addParticlesEffect();
+            startCounters();
+        }
+
+        function addParticlesEffect() {
+            const particlesContainer = document.createElement('div');
+            particlesContainer.className = 'particles-container';
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 10 + 5;
+                const left = Math.random() * 100;
+                const animationDelay = Math.random() * 5;
+                const animationDuration = Math.random() * 3 + 3;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}%`;
+                particle.style.animationDelay = `${animationDelay}s`;
+                particle.style.animationDuration = `${animationDuration}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            elements.heroContainer.appendChild(particlesContainer);
+        }
+
+        function startCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        counter.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 16);
+            });
+        }
+
+        // Initialize the application
+        async function initApp() {
+            try {
+                await Promise.all([
+                    loadSiteSettings(),
+                    loadNavigationLinks(),
+                    loadSocialLinks(),
+                    loadFooterContent(),
+                    loadPreviewHub(),
+                    loadTeamMembers(),
+                    loadTestimonials(),
+                    renderPremiumHero()
+                ]);
+                
+                initVideoModal();
+                initTestimonialModal();
+                initSearch(); // Initialize search functionality
+                
+                setTimeout(() => {
+                    elements.loadingSpinner.classList.add('final-state');
+                    elements.loadingSpinner.textContent = "Aliver Biopharm";
+                    
+                    setTimeout(() => {
+                        elements.loadingOverlay.style.opacity = '0';
+                        loadingQueue.hide();
+                        
+                        setTimeout(() => {
+                            elements.loadingOverlay.style.display = 'none';
+                            notify.show('Welcome!', 'All resources have been loaded successfully.', 'success', 4000);
+                        }, 500);
+                    }, 1000);
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error initializing application:', error);
+                
+                notify.show('Loading Error', 'Some resources failed to load. Please refresh the page.', 'error', 5000);
+                
+                setTimeout(() => {
+                    elements.loadingOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        elements.loadingOverlay.style.display = 'none';
+                    }, 500);
+                }, 2000);
+            }
+        }
+
+        // Start the application
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        // Smooth scrolling for anchor links
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('a[href^="#"]')) {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+
+        // Scroll-based animations
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.slideInUp, .fadeIn, .zoomIn');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('load', handleScrollAnimations);
+        window.addEventListener('scroll', handleScrollAnimations);
+
+        // Global functions
+        window.playVideo = playVideo;
+    </script>
+</body>
+</html>
+            
